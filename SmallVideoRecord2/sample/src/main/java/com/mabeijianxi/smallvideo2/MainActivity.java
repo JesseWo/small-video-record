@@ -9,7 +9,6 @@ import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -28,7 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mabeijianxi.smallvideorecord2.DeviceUtils;
+import com.mabeijianxi.smallvideorecord2.FileUtils;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
@@ -156,11 +155,11 @@ public class MainActivity extends AppCompatActivity {
         spinner_need_full.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-              if( ((TextView)view).getText().toString().equals("false")){
-                  et_width.setVisibility(View.VISIBLE);
-              }else {
-                  et_width.setVisibility(View.GONE);
-              }
+                if (((TextView) view).getText().toString().equals("false")) {
+                    et_width.setVisibility(View.VISIBLE);
+                } else {
+                    et_width.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -244,23 +243,23 @@ public class MainActivity extends AppCompatActivity {
             recordMode.setVelocity(spinner_record.getSelectedItem().toString());
         }
 
-        if(!needFull&&checkStrEmpty(width, "请输入宽度")){
-               return;
+        if (!needFull && checkStrEmpty(width, "请输入宽度")) {
+            return;
         }
         if (
-                 checkStrEmpty(height, "请输入高度")
-                || checkStrEmpty(maxFramerate, "请输入最高帧率")
-                || checkStrEmpty(maxTime, "请输入最大录制时间")
-                || checkStrEmpty(minTime, "请输小最大录制时间")
-                || checkStrEmpty(bitrate, "请输入比特率")
-                ) {
+                checkStrEmpty(height, "请输入高度")
+                        || checkStrEmpty(maxFramerate, "请输入最高帧率")
+                        || checkStrEmpty(maxTime, "请输入最大录制时间")
+                        || checkStrEmpty(minTime, "请输小最大录制时间")
+                        || checkStrEmpty(bitrate, "请输入比特率")
+        ) {
             return;
         }
 //      FFMpegUtils.captureThumbnails("/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.mp4", "/storage/emulated/0/DCIM/mabeijianxi/1496455533800/1496455533800.jpg", "1");
 
         MediaRecorderConfig config = new MediaRecorderConfig.Buidler()
                 .fullScreen(needFull)
-                .smallVideoWidth(needFull?0:Integer.valueOf(width))
+                .smallVideoWidth(needFull ? 0 : Integer.valueOf(width))
                 .smallVideoHeight(Integer.valueOf(height))
                 .recordTimeMax(Integer.valueOf(maxTime))
                 .recordTimeMin(Integer.valueOf(minTime))
@@ -341,7 +340,7 @@ public class MainActivity extends AppCompatActivity {
                         String sRate = et_only_framerate.getText().toString();
                         String scale = et_only_scale.getText().toString();
                         int iRate = 0;
-                        float fScale=0;
+                        float fScale = 0;
                         if (!TextUtils.isEmpty(sRate)) {
                             iRate = Integer.valueOf(sRate);
                         }
@@ -414,21 +413,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static void initSmallVideo() {
+    public void initSmallVideo() {
         // 设置拍摄视频缓存路径
-        File dcim = Environment
-                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        if (DeviceUtils.isZte()) {
-            if (dcim.exists()) {
-                JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-            } else {
-                JianXiCamera.setVideoCachePath(dcim.getPath().replace("/sdcard/",
-                        "/sdcard-ext/")
-                        + "/mabeijianxi/");
-            }
-        } else {
-            JianXiCamera.setVideoCachePath(dcim + "/mabeijianxi/");
-        }
+        File cacheDir = FileUtils.getDiskCacheDir(this);
+        JianXiCamera.setVideoCachePath(cacheDir + "/video/");
         // 初始化拍摄
         JianXiCamera.initialize(false, null);
     }

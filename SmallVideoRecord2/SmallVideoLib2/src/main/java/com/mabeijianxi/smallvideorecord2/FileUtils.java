@@ -1,5 +1,6 @@
 package com.mabeijianxi.smallvideorecord2;
 
+import android.content.Context;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -17,6 +18,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class FileUtils {
+    public static File getDiskCacheDir(Context context) {
+        File cacheDir = context.getCacheDir();
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            File externalCacheDir = context.getExternalCacheDir();
+            if (externalCacheDir != null) {
+                cacheDir = externalCacheDir;
+            }
+        }
+        return cacheDir;
+    }
 
     /**
      * 拼接路径
@@ -252,6 +264,7 @@ public class FileUtils {
             }
         }
     }
+
     public static void deleteCacheFile2TS(String f) {
         if (f != null && f.length() > 0) {
             File files = new File(f);
@@ -265,6 +278,7 @@ public class FileUtils {
             }
         }
     }
+
     public static void deleteDir(String f) {
         if (f != null && f.length() > 0) {
             deleteDir(new File(f));

@@ -14,8 +14,8 @@
         <item>placebo</item>
     </string-array>
     <string-array name="need_full">
-        <item>false</item>
         <item>true</item>
+        <item>false</item>
     </string-array>
 
 </resources>

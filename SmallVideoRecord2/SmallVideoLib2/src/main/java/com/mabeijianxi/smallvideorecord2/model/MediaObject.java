@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 
@@ -96,9 +97,10 @@ public class MediaObject implements Serializable {
     }
 
 
-    public String getBaseName(){
+    public String getBaseName() {
         return mKey;
     }
+
     /**
      * 获取视频码率
      */
@@ -218,8 +220,8 @@ public class MediaObject implements Serializable {
      * 删除分块
      */
     public void removePart(MediaPart part, boolean deleteFile) {
-        if (mMediaList != null)
-            mMediaList.remove(part);
+/*        if (mMediaList != null)
+            mMediaList.remove(part);*/
 
         if (part != null) {
             part.stop();
@@ -228,8 +230,33 @@ public class MediaObject implements Serializable {
                 part.delete();
             }
             mMediaList.remove(part);
-            if (mCurrentPart != null && part.equals(mCurrentPart)) {
+            if (part.equals(mCurrentPart)) {
                 mCurrentPart = null;
+            }
+        }
+    }
+
+    public void stopRecord() {
+        Iterator<MediaPart> iterator = mMediaList.iterator();
+        while (iterator.hasNext()) {
+            MediaObject.MediaPart part = iterator.next();
+            if (part != null && part.recording) {
+                part.recording = false;
+                part.endTime = System.currentTimeMillis();
+                part.duration = (int) (part.endTime - part.startTime);
+                part.cutStartTime = 0;
+                part.cutEndTime = part.duration;
+                // 检测视频大小是否大于0，否则丢弃（注意有音频没视频的情况下音频也会丢弃）
+                File videoFile = new File(part.mediaPath);
+                if (videoFile.length() < 1) {
+                    part.stop();
+                    // 删除文件
+                    part.delete();
+                    if (part.equals(mCurrentPart)) {
+                        mCurrentPart = null;
+                    }
+                    iterator.remove();
+                }
             }
         }
     }

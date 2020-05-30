@@ -26,10 +26,6 @@
 
             />
         <activity
-            android:name="com.mabeijianxi.smallvideorecord2.MediaRecorderActivity"
-            android:theme="@style/AppNoBarTheme"
-            />
-        <activity
             android:name="com.mabeijianxi.smallvideo2.SendSmallVideoActivity"
             android:theme="@style/AppNoBarTheme" />
     </application>
