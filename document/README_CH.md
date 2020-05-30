@@ -9,7 +9,6 @@ Android端音频视频采集，底层利用FFmpeg编码压缩处理（small-vide
 ## 效果如下：
 ![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/new_sample.gif)
 ## 使用：
-* [small-video-record1 使用步骤](https://github.com/mabeijianxi/small-video-record/blob/master/document/1.x_using_help.md)<br>
 * [small-video-record2 使用步骤](https://github.com/mabeijianxi/small-video-record/blob/master/document/2.x_using_help.md)<br>
 ## 特点：
 * 边采集边编码。
@@ -117,53 +116,10 @@ Android端音频视频采集，底层利用FFmpeg编码压缩处理（small-vide
 		修改编译脚本，增加可移植性
 
 	
-## small-video-record 更新日志：
-
-	2017-06-14:
-		提交1.2.2，本地压缩新增分辨率缩放功能。
-	
-	2017-06-13:
-		提交1.2.1，更改默认压缩速度为最快。
-	
-	2017-04-06:
-		提交1.2.0，增加选择本地视频压缩，修改一系列bug
-	
-	2017-03-16:
-		提交1.1.0，增加更精细的码率控制、转码速度、压缩等级等可配置参数，修复一些bug	
-
-	2017-03-14：
-		提交1.0.9，新增可配置码率模式（VBR、CBR）与其大小
-	
-	2016-12-14：
-		提交1.0.8，修复部分手机不支持输入帧率问题，彻底修复录制浏览变形
-
-	2016-10-26:
-		提交1.0.7,增强兼容性，防止录制尺寸不支持奔溃
-
-	2016-10-14:
-		提交1.0.6，修复在不支持的尺寸下无异常抛出。
-
-	2016-10-13:
-		提交小视频1.0.5，修复部分手机录制变形问题。
-	
-	2016-10-12：
-		修复sample参数小bug。
-	
-	2016-08-26：
-		提交小视频1.0.2，增加Buidler配置，可自定义更多内容。
-	
-	2016-08-26：
-		提交小视频1.0.1，更新配置文件。
-	
-	2016-08-25：
-		提交小视频1.0.0
 ## sample下载：
 ###### small-video-record2:
 ![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/sample2.png)
 [Download Demo2](https://fir.im/jianxiMediaRecord2)
-###### small-video-record:
-![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/sample.png)
-[Download Demo1](http://fir.im/smallvideorecord)
 
 ## License
 

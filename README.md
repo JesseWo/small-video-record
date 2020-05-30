@@ -10,7 +10,6 @@ Used for capturing audio and video in Android system. The bottom layer uses FFmp
 ![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/new_sample.gif)
 
 ## Instructions:
-* [small-video-record1 ](https://github.com/mabeijianxi/small-video-record/blob/master/document/1.x_en_using_help.md)<br>
 * [small-video-record2 ](https://github.com/mabeijianxi/small-video-record/blob/master/document/2.x_en_using_help.md)<br>
 
 
@@ -116,53 +115,10 @@ In this mode, you can more accurately control the video quality and size
 		Modify compilation scripts to increase portability.
 
 	
-## Small-video-record Update Log:
-
-	2017-06-14:
-		Submit 1.2.2; add new resolution zoom function in local compression.
-	
-	2017-06-13:
-		Submit 1.2.1; change the default compression speed to the fastest.
-	
-	2017-04-06:
-		Submit 1.2.0; add the choice to select the local video compression; modify a series of bugs.
-	
-	2017-03-16:
-		Submit 1.1.0; add more accurately control of code rate, transcoding speed, compression level and other configurable parameters; fix some bugs.	
-
-	2017-03-14：
-		Submit 1.0.9; add configurable code rate mode (VBR, CBR) and their sizes.
-	
-	2016-12-14：
-		Submit 1.0.8; solve the problem of some phones which do not support the input frame rate; completely repair the deformation problem when browsing pictures.
-
-	2016-10-26:
-		Submit 1.0.7; enhance compatibility, to prevent collapse in case that recording size doesn’t support.
-
-	2016-10-14:
-		Submitted 1.0.6; repair the problem that abnormal information appeared under unsupported sizes. 
-
-	2016-10-13:
-		Submit a small video 1.0.5; repair the deformation problems of some mobile phones when recording.
-	
-	2016-10-12：
-		Repair “sample” parameter and small bug.
-	
-	2016-08-26：
-		Submit small video 1.0.2; add “Buidler” configuration, and customize more content.
-	
-	2016-08-26：
-		Submit small video 1.0.1; update the configuration file.
-	
-	2016-08-25：
-		Submit small video 1.0.0
 ## Sample download：
 ###### small-video-record2:
 ![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/sample2.png)
 [Download Demo2](https://fir.im/jianxiMediaRecord2)
-###### small-video-record:
-![sample](https://github.com/mabeijianxi/small-video-record/blob/master/image/sample.png)
-[Download Demo1](http://fir.im/smallvideorecord)
 
 ## License
 
