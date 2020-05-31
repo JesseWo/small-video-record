@@ -1,4 +1,6 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.utils;
+
+import com.mabeijianxi.smallvideorecord2.BuildConfig;
 
 public class Log {
 

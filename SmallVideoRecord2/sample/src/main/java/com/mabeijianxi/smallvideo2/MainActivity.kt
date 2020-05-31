@@ -27,13 +27,11 @@ import com.mabeijianxi.smallvideorecord2.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
     private val PERMISSION_REQUEST_CODE = 0x001
     private var sv: ScrollView? = null
     private var bt_start: Button? = null
     private var bt_choose: Button? = null
-    private var et_maxtime: EditText? = null
-    private var spinner_record: Spinner? = null
-    private var et_maxframerate: EditText? = null
     private val CHOOSE_CODE = 0x000520
     private var rg_aspiration: RadioGroup? = null
     private var mProgressDialog: ProgressDialog? = null
@@ -47,9 +45,8 @@ class MainActivity : AppCompatActivity() {
     private var et_only_compress_bitrate: EditText? = null
     private var spinner_only_compress: Spinner? = null
     private var et_only_framerate: EditText? = null
-    private var et_bitrate: EditText? = null
     private var et_only_scale: EditText? = null
-    private var et_mintime: EditText? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -118,13 +115,8 @@ class MainActivity : AppCompatActivity() {
         sv = findViewById<View>(R.id.sv) as ScrollView
         bt_choose = findViewById<View>(R.id.bt_choose) as Button
         ll_only_compress = findViewById<View>(R.id.ll_only_compress) as LinearLayout
-        et_maxframerate = findViewById<View>(R.id.et_maxframerate) as EditText
-        et_bitrate = findViewById<View>(R.id.et_record_bitrate) as EditText
-        et_maxtime = findViewById<View>(R.id.et_maxtime) as EditText
-        et_mintime = findViewById<View>(R.id.et_mintime) as EditText
         et_only_framerate = findViewById<View>(R.id.et_only_framerate) as EditText
         et_only_scale = findViewById<View>(R.id.et_only_scale) as EditText
-        spinner_record = findViewById<View>(R.id.spinner_record) as Spinner
         rg_only_compress_mode = i_only_compress.findViewById<View>(R.id.rg_mode) as RadioGroup
         ll_only_compress_crf = i_only_compress.findViewById<View>(R.id.ll_crf) as LinearLayout
         et_only_compress_crfSize = i_only_compress.findViewById<View>(R.id.et_crfSize) as EditText
@@ -153,19 +145,16 @@ class MainActivity : AppCompatActivity() {
         val sizeArr = (spinner_support_preview_size?.selectedItem as String).split("x")
         val width = sizeArr[1]
         val height = sizeArr[0]
-        val maxFramerate = et_maxframerate!!.text.toString()
-        val bitrate = et_bitrate!!.text.toString()
-        val maxTime = et_maxtime!!.text.toString()
-        val minTime = et_mintime!!.text.toString()
+        val maxFramerate = et_maxframerate?.text.toString()
+        val bitrate = et_record_bitrate?.text.toString()
+        val maxTime = et_maxtime?.text.toString()
+        val minTime = et_mintime?.text.toString()
         val needFull = switch_full_screen.isChecked
         val recordMode: BaseMediaBitrateConfig
         val compressMode: BaseMediaBitrateConfig? = null
         recordMode = AutoVBRMode()
         if (spinner_record!!.selectedItem.toString() != "none") {
             recordMode.setVelocity(spinner_record!!.selectedItem.toString())
-        }
-        if (!needFull && checkStrEmpty(width, "请输入宽度")) {
-            return
         }
         if (checkStrEmpty(height, "请输入高度")
                 || checkStrEmpty(maxFramerate, "请输入最高帧率")

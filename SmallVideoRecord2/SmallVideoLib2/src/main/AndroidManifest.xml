@@ -29,6 +29,11 @@
             android:theme="@style/FullScreenTheme"
             android:screenOrientation="portrait"
             />
+
+        <provider
+            android:name=".AppLikeTrojanProvider"
+            android:authorities="${applicationId}.AppCommonTrojanProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

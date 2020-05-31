@@ -2,6 +2,7 @@ package com.mabeijianxi.smallvideorecord2;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Area;
@@ -12,8 +13,10 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.WindowManager;
 
 import com.mabeijianxi.smallvideorecord2.jniinterface.FFmpegBridge;
 import com.mabeijianxi.smallvideorecord2.model.BaseMediaBitrateConfig;
@@ -599,11 +602,12 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
 
         try {
 
-            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK)
+            if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 camera = Camera.open();
-            else
+            } else {
                 camera = Camera.open(mCameraId);
-            camera.setDisplayOrientation(90);
+            }
+            camera.setDisplayOrientation(getCameraDisplayOrientation(VideoAppLike.INSTANCE.getApp(), mCameraId));
             try {
                 camera.setPreviewDisplay(mSurfaceHolder);
             } catch (IOException e) {
@@ -933,7 +937,35 @@ public abstract class MediaRecorderBase implements Callback, PreviewCallback, IM
         return add;
     }
 
-    public MediaObject getMediaObject() {
-        return mMediaObject;
+    //得到摄像旋转角度
+    private int getCameraDisplayOrientation(Context context, int cameraId) {
+        Camera.CameraInfo info = new Camera.CameraInfo();
+        Camera.getCameraInfo(cameraId, info);
+        int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getRotation();
+        int degrees = 0;
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+        return result;
     }
 }

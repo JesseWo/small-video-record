@@ -12,11 +12,13 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import com.mabeijianxi.smallvideorecord2.MediaRecorderBase.OnEncodeListener
 import com.mabeijianxi.smallvideorecord2.model.MediaRecorderConfig
 import com.mabeijianxi.smallvideorecord2.utils.DeviceUtils
 import com.mabeijianxi.smallvideorecord2.utils.FileUtils
+import com.mabeijianxi.smallvideorecord2.utils.Log
 import com.mabeijianxi.smallvideorecord2.utils.StringUtils
 import com.mabeijianxi.smallvideorecord2.view.RecordButtonView
 import kotlinx.android.synthetic.main.activity_media_recorder.*
@@ -190,18 +192,19 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
         })
 
         // ~~~ 设置数据
-
         // 是否支持前置摄像头
         if (MediaRecorderBase.isSupportFrontCamera()) {
+            record_camera_switcher?.isVisible = true
             record_camera_switcher?.setOnClickListener(this)
         } else {
-            record_camera_switcher?.visibility = View.GONE
+            record_camera_switcher?.isVisible = false
         }
         // 是否支持闪光灯
         if (DeviceUtils.isSupportCameraLedFlash(packageManager)) {
+            record_camera_led?.isVisible = true
             record_camera_led?.setOnClickListener(this)
         } else {
-            record_camera_led?.visibility = View.GONE
+            record_camera_led?.isVisible = false
         }
         record_progress?.setMaxDuration(recordTimeMax)
         record_progress?.setMinTime(recordTimeMin)
@@ -389,18 +392,12 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
             if (!isFinishing) {
                 if (duration < recordTimeMin) {
                     if (duration == 0) {
-                        record_camera_switcher?.visibility = View.VISIBLE
                         record_delete?.visibility = View.GONE
-                    } else {
-                        record_camera_switcher?.visibility = View.GONE
                     }
-                    // 视频必须大于3秒
-                    if (iv_next?.visibility != View.INVISIBLE) iv_next?.visibility = View.INVISIBLE
+                    iv_next?.visibility = View.GONE
                 } else {
                     // 下一步
-                    if (iv_next?.visibility != View.VISIBLE) {
-                        iv_next?.visibility = View.VISIBLE
-                    }
+                    iv_next?.visibility = View.VISIBLE
                 }
             }
         }
@@ -418,9 +415,8 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
                         }
                     }
                     record_progress?.invalidate()
-                    // if (mPressedStatus)
-                    // titleText.setText(String.format("%.1f",
-                    // mMediaRecorder.getDuration() / 1000F));
+                    //已录制时长
+                    tv_time?.text = "${mMediaRecorder.mMediaObject.duration / 1000}s"
                     if (mPressedStatus) sendEmptyMessageDelayed(HANDLE_INVALIDATE_PROGRESS, 30)
                 }
             }

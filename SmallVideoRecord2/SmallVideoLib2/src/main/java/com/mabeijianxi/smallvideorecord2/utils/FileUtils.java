@@ -3,8 +3,6 @@ package com.mabeijianxi.smallvideorecord2.utils;
 import android.content.Context;
 import android.os.Environment;
 
-import com.mabeijianxi.smallvideorecord2.Log;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
