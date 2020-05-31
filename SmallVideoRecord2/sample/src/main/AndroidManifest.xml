@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.mabeijianxi.smallvideo2.MainActivity"
+            android:name="com.mabeijianxi.smallvideo2.VideoRecordConfigActivity"
             android:windowSoftInputMode="stateHidden"
             >
             <intent-filter>

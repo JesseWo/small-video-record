@@ -26,7 +26,7 @@ import com.mabeijianxi.smallvideorecord2.utils.FileUtils
 import com.mabeijianxi.smallvideorecord2.utils.StringUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class VideoRecordConfigActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 0x001
     private var bt_start: Button? = null
@@ -52,12 +52,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun setSupportCameraSize() {
         val back = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK)
-        val backSupportList = back.parameters.supportedPreviewSizes.map { "${it.height}x${it.width}" }
+        val backSupportList = back.parameters.supportedPreviewSizes.map { "${it.height}$SIZE_DIVIDER${it.width}" }
         back.release()
         spinner_support_preview_size.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, backSupportList)
 
         val front = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT)
-        val frontSupportList = front.parameters.supportedPreviewSizes.map { "${it.height}x${it.width}" }
+        val frontSupportList = front.parameters.supportedPreviewSizes.map { "${it.height}$SIZE_DIVIDER${it.width}" }
         front.release()
         spinner_front_support_preview_size.adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, frontSupportList)
     }
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
 
         spinner_support_preview_size?.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
-                val sizeArr = (spinner_support_preview_size?.selectedItem as String).split("x")
+                val sizeArr = (spinner_support_preview_size?.selectedItem as String).split(SIZE_DIVIDER)
                 val width = sizeArr[1]
                 val height = sizeArr[0]
                 //切换尺寸后自动切换 BitRate = width * height * 3 (中等码率)
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun go(c: View?) {
-        val sizeArr = (spinner_support_preview_size?.selectedItem as String).split("x")
+        val sizeArr = (spinner_support_preview_size?.selectedItem as String).split(SIZE_DIVIDER)
         val width = sizeArr[1]
         val height = sizeArr[0]
         val maxFramerate = et_maxframerate?.text.toString()
@@ -248,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                             runOnUiThread { showProgress("", "压缩中...", -1) }
                             val onlyCompressOverBean = LocalMediaCompress(config).startCompress()
                             runOnUiThread { hideProgress() }
-                            val intent = Intent(this@MainActivity, SendSmallVideoActivity::class.java)
+                            val intent = Intent(this@VideoRecordConfigActivity, SendSmallVideoActivity::class.java)
                             intent.putExtra(MediaRecorderActivity.VIDEO_URI, onlyCompressOverBean.videoPath)
                             intent.putExtra(MediaRecorderActivity.VIDEO_SCREENSHOT, onlyCompressOverBean.picPath)
                             startActivity(intent)
@@ -323,5 +323,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
+
+        private const val SIZE_DIVIDER = "x"
     }
 }

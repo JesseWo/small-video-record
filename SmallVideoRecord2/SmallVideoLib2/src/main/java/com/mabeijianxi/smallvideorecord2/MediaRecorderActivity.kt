@@ -157,8 +157,16 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
 
             override fun onDown() {
                 // 检测是否手动对焦
-                // 判断是否已经超时
+
                 mMediaRecorder.mMediaObject?.let {
+                    val part = it.currentPart
+                    if (part != null && part.remove) {
+                        part.remove = false
+                        record_delete?.isChecked = false
+                        record_progress?.invalidate()
+                    }
+
+                    // 判断是否已经超时
                     if (it.duration >= recordTimeMax) {
                         return
                     }
@@ -261,6 +269,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
     private fun startRecord() {
         val part = mMediaRecorder.startRecord() ?: return
         record_progress?.setData(mMediaRecorder.mMediaObject)
+        record_camera_switcher?.isVisible = false
         setStartUI()
     }
 
@@ -290,8 +299,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
                             it.delete()
                             finish()
                         }
-                        .setPositiveButton(R.string.record_camera_cancel_dialog_no,
-                                null).setCancelable(false).show()
+                        .setPositiveButton(R.string.record_camera_cancel_dialog_no, null).setCancelable(false).show()
                 return
             }
             it.delete()
@@ -316,9 +324,8 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
     }
 
     override fun onClick(v: View) {
-        val id = v.id
         // 处理开启回删后其他点击操作
-        if (id != R.id.record_delete) {
+        if (v.id != R.id.record_delete) {
             mMediaRecorder.mMediaObject?.currentPart?.let { part ->
                 if (part.remove) {
                     part.remove = false
@@ -327,44 +334,50 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
                 }
             }
         }
-        if (id == R.id.title_back) {
-            onBackPressed()
-        } else if (id == R.id.record_camera_switcher) { // 前后摄像头切换
-            if (record_camera_led.isChecked) {
+        when (v.id) {
+            R.id.title_back -> {
+                onBackPressed()
+            }
+            R.id.record_camera_switcher -> { // 前后摄像头切换
+                if (record_camera_led.isChecked) {
+                    mMediaRecorder.toggleFlashMode()
+                    record_camera_led?.isChecked = false
+                }
+                mMediaRecorder.switchCamera()
+                record_camera_led?.isEnabled = !mMediaRecorder.isFrontCamera
+            }
+            R.id.record_camera_led -> { // 闪光灯
+                // 开启前置摄像头以后不支持开启闪光灯
+                if (mMediaRecorder.isFrontCamera) {
+                    return
+                }
                 mMediaRecorder.toggleFlashMode()
-                record_camera_led?.isChecked = false
             }
-            mMediaRecorder.switchCamera()
-            record_camera_led?.isEnabled = !mMediaRecorder.isFrontCamera
-        } else if (id == R.id.record_camera_led) { // 闪光灯
-            // 开启前置摄像头以后不支持开启闪光灯
-            if (mMediaRecorder.isFrontCamera) {
-                return
-            }
-            mMediaRecorder.toggleFlashMode()
-        } else if (id == R.id.iv_next) { // 停止录制
-            stopRecord()
-            /*finish();
+            R.id.iv_next -> { // 停止录制
+                stopRecord()
+                /*finish();
             overridePendingTransition(R.anim.push_bottom_in,
 					R.anim.push_bottom_out);*/
-        } else if (id == R.id.record_delete) {
-            // 取消回删
-            mMediaRecorder.mMediaObject?.let {
-                val part = it.currentPart
-                if (part != null) {
-                    if (part.remove) {
-                        part.remove = false
-                        it.removePart(part, true)
-                        record_delete?.isChecked = false
-                    } else {
-                        part.remove = true
-                        record_delete?.isChecked = true
+            }
+            R.id.record_delete -> {
+                // 取消回删
+                mMediaRecorder.mMediaObject?.let {
+                    val part = it.currentPart
+                    if (part != null) {
+                        if (part.remove) {
+                            part.remove = false
+                            it.removePart(part, true)
+                            record_delete?.isChecked = false
+                        } else {
+                            part.remove = true
+                            record_delete?.isChecked = true
+                        }
                     }
-                }
-                record_progress?.invalidate()
+                    record_progress?.invalidate()
 
-                // 检测按钮状态
-                checkStatus()
+                    // 检测按钮状态
+                    checkStatus()
+                }
             }
         }
     }
