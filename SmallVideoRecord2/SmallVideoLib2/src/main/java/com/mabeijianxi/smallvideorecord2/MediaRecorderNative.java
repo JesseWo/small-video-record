@@ -32,12 +32,12 @@ public class MediaRecorderNative extends MediaRecorderBase implements MediaRecor
     public MediaObject.MediaPart startRecord() {
         int vCustomFormat;
         if (mCameraId == Camera.CameraInfo.CAMERA_FACING_BACK) {
-            vCustomFormat=FFmpegBridge.ROTATE_90_CROP_LT;
+            vCustomFormat = FFmpegBridge.ROTATE_90_CROP_LT;
         } else {
-            vCustomFormat=FFmpegBridge.ROTATE_270_CROP_LT_MIRROR_LR;
+            vCustomFormat = FFmpegBridge.ROTATE_270_CROP_LT_MIRROR_LR;
         }
 
-        FFmpegBridge.prepareJXFFmpegEncoder( mMediaObject.getOutputDirectory(), mMediaObject.getBaseName(),vCustomFormat, mSupportedPreviewWidth, SMALL_VIDEO_HEIGHT, SMALL_VIDEO_WIDTH, SMALL_VIDEO_HEIGHT, mFrameRate, mVideoBitrate);
+        FFmpegBridge.prepareJXFFmpegEncoder(mMediaObject.getOutputDirectory(), mMediaObject.getBaseName(), vCustomFormat, mSupportedPreviewWidth, SMALL_VIDEO_HEIGHT, SMALL_VIDEO_WIDTH, SMALL_VIDEO_HEIGHT, mFrameRate, mVideoBitrate);
 
         MediaObject.MediaPart result = null;
 
@@ -122,24 +122,25 @@ public class MediaRecorderNative extends MediaRecorderBase implements MediaRecor
     @Override
     public void allRecordEnd() {
 
-        final boolean captureFlag = FFMpegUtils.captureThumbnails(mMediaObject.getOutputTempTranscodingVideoPath(), mMediaObject.getOutputVideoThumbPath(),  String.valueOf(CAPTURE_THUMBNAILS_TIME));
+        final boolean captureFlag = FFMpegUtils.captureThumbnails(mMediaObject.getOutputTempTranscodingVideoPath(), mMediaObject.getOutputVideoThumbPath(), String.valueOf(CAPTURE_THUMBNAILS_TIME));
 
-        if(mOnEncodeListener!=null){
+        if (mOnEncodeListener != null) {
             new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(captureFlag){
+                    if (captureFlag) {
                         mOnEncodeListener.onEncodeComplete();
-                    }else {
+                    } else {
                         mOnEncodeListener.onEncodeError();
                     }
                 }
-            },0);
+            }, 0);
 
         }
 
     }
-    public void activityStop(){
+
+    public void activityStop() {
         FFmpegBridge.unRegistFFmpegStateListener(this);
     }
 }

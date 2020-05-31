@@ -29,13 +29,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 0x001
-    private var sv: ScrollView? = null
     private var bt_start: Button? = null
-    private var bt_choose: Button? = null
     private val CHOOSE_CODE = 0x000520
-    private var rg_aspiration: RadioGroup? = null
     private var mProgressDialog: ProgressDialog? = null
-    private var ll_only_compress: LinearLayout? = null
     private var rg_only_compress_mode: RadioGroup? = null
     private var ll_only_compress_crf: LinearLayout? = null
     private var et_only_compress_crfSize: EditText? = null
@@ -44,8 +40,6 @@ class MainActivity : AppCompatActivity() {
     private var tv_only_compress_maxbitrate: TextView? = null
     private var et_only_compress_bitrate: EditText? = null
     private var spinner_only_compress: Spinner? = null
-    private var et_only_framerate: EditText? = null
-    private var et_only_scale: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,21 +83,26 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        rg_aspiration!!.setOnCheckedChangeListener { group, checkedId ->
+        rg_aspiration?.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                 R.id.rb_recorder -> {
-                    sv!!.visibility = View.VISIBLE
-                    ll_only_compress!!.visibility = View.GONE
+                    sv?.visibility = View.VISIBLE
+                    ll_only_compress?.visibility = View.GONE
                 }
                 R.id.rb_local -> {
-                    sv!!.visibility = View.GONE
-                    ll_only_compress!!.visibility = View.VISIBLE
+                    sv?.visibility = View.GONE
+                    ll_only_compress?.visibility = View.VISIBLE
                 }
             }
         }
 
         spinner_support_preview_size?.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+                val sizeArr = (spinner_support_preview_size?.selectedItem as String).split("x")
+                val width = sizeArr[1]
+                val height = sizeArr[0]
+                //切换尺寸后自动切换 BitRate = width * height * 3 (中等码率)
+                et_record_bitrate?.setText("${height.toInt() * width.toInt() * 3}")
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -111,12 +110,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        rg_aspiration = findViewById<View>(R.id.rg_aspiration) as RadioGroup
-        sv = findViewById<View>(R.id.sv) as ScrollView
-        bt_choose = findViewById<View>(R.id.bt_choose) as Button
-        ll_only_compress = findViewById<View>(R.id.ll_only_compress) as LinearLayout
-        et_only_framerate = findViewById<View>(R.id.et_only_framerate) as EditText
-        et_only_scale = findViewById<View>(R.id.et_only_scale) as EditText
         rg_only_compress_mode = i_only_compress.findViewById<View>(R.id.rg_mode) as RadioGroup
         ll_only_compress_crf = i_only_compress.findViewById<View>(R.id.ll_crf) as LinearLayout
         et_only_compress_crfSize = i_only_compress.findViewById<View>(R.id.et_crfSize) as EditText
@@ -233,8 +226,8 @@ class MainActivity : AppCompatActivity() {
                         if (spinner_only_compress!!.selectedItem.toString() != "none") {
                             compressMode.velocity = spinner_only_compress!!.selectedItem.toString()
                         }
-                        val sRate = et_only_framerate!!.text.toString()
-                        val scale = et_only_scale!!.text.toString()
+                        val sRate = et_only_framerate?.text.toString()
+                        val scale = et_only_scale?.text.toString()
                         var iRate = 0
                         var fScale = 0f
                         if (!TextUtils.isEmpty(sRate)) {
@@ -306,22 +299,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun showProgress(title: String, message: String, theme: Int) {
         if (mProgressDialog == null) {
-            mProgressDialog = if (theme > 0) ProgressDialog(this, theme) else ProgressDialog(this)
-            mProgressDialog!!.setProgressStyle(ProgressDialog.STYLE_SPINNER)
-            mProgressDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            mProgressDialog!!.setCanceledOnTouchOutside(false) // 不能取消
-            mProgressDialog!!.setCancelable(false)
-            mProgressDialog!!.isIndeterminate = true // 设置进度条是否不明确
+            mProgressDialog = if (theme > 0) ProgressDialog(this, theme) else ProgressDialog(this).apply {
+                setProgressStyle(ProgressDialog.STYLE_SPINNER)
+                requestWindowFeature(Window.FEATURE_NO_TITLE)
+                setCanceledOnTouchOutside(false) // 不能取消
+                setCancelable(false)
+                isIndeterminate = true // 设置进度条是否不明确
+                if (!StringUtils.isEmpty(title)) setTitle(title)
+                setMessage(message)
+            }
         }
-        if (!StringUtils.isEmpty(title)) mProgressDialog!!.setTitle(title)
-        mProgressDialog!!.setMessage(message)
-        mProgressDialog!!.show()
+        mProgressDialog?.show()
     }
 
     private fun hideProgress() {
-        if (mProgressDialog != null) {
-            mProgressDialog!!.dismiss()
-        }
+        mProgressDialog?.dismiss()
     }
 
     companion object {

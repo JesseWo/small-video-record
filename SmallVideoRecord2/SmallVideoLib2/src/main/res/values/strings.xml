@@ -17,7 +17,7 @@
     <string name="record_camera_delay">延迟</string>
     <string name="record_camera_filter">滤镜</string>
     <string name="record_camera_init_faild">初始化视频存储路径失败</string>
-    <string name="record_camera_progress_message">准备中…</string>
+    <string name="record_camera_progress_message">视频压缩中…</string>
     <string name="record_camera_check_available_faild">手机满了！至少需要200M存储空间才能继续拍摄！</string>
     <string name="record_camera_open_audio_faild">无法打开录音设备！</string>
     <string name="record_camera_save_faild">视频信息保存失败！</string>
