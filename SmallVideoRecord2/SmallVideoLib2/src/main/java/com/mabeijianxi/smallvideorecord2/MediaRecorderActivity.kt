@@ -56,16 +56,6 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
         const val OVER_ACTIVITY_NAME = "over_activity_name"
 
         /**
-         * 最大录制时间的key
-         */
-        const val MEDIA_RECORDER_MAX_TIME_KEY = "media_recorder_max_time_key"
-
-        /**
-         * 最小录制时间的key
-         */
-        const val MEDIA_RECORDER_MIN_TIME_KEY = "media_recorder_min_time_key"
-
-        /**
          * 录制配置key
          */
         const val MEDIA_RECORDER_CONFIG_KEY = "media_recorder_config_key"
@@ -74,18 +64,20 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
          * @param context
          * @param overGOActivityName 录制结束后需要跳转的Activity全类名
          */
-        @JvmStatic
         fun goSmallVideoRecorder(context: Activity, overGOActivityName: String?, mediaRecorderConfig: MediaRecorderConfig?) {
             context.startActivity(Intent(context, MediaRecorderActivity::class.java).putExtra(OVER_ACTIVITY_NAME, overGOActivityName).putExtra(MEDIA_RECORDER_CONFIG_KEY, mediaRecorderConfig))
         }
     }
 
-    private var RECORD_TIME_MIN = (1.5f * 1000).toInt()
+    /**
+     * 最小录制时长(默认3s)
+     */
+    private var recordTimeMin = (3f * 1000).toInt()
 
     /**
-     * 录制最长时间
+     * 最大录制时长(默认60s)
      */
-    private var RECORD_TIME_MAX = 6 * 1000
+    private var recordTimeMax = 60 * 1000
 
     /**
      * SDK视频录制对象
@@ -127,8 +119,8 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
         val mediaRecorderConfig: MediaRecorderConfig = intent.getParcelableExtra(MEDIA_RECORDER_CONFIG_KEY)
                 ?: return
         NEED_FULL_SCREEN = mediaRecorderConfig.fullScreen
-        RECORD_TIME_MAX = mediaRecorderConfig.recordTimeMax
-        RECORD_TIME_MIN = mediaRecorderConfig.recordTimeMin
+        recordTimeMax = mediaRecorderConfig.recordTimeMax
+        recordTimeMin = mediaRecorderConfig.recordTimeMin
         MediaRecorderBase.MAX_FRAME_RATE = mediaRecorderConfig.maxFrameRate
         MediaRecorderBase.NEED_FULL_SCREEN = NEED_FULL_SCREEN
         MediaRecorderBase.MIN_FRAME_RATE = mediaRecorderConfig.minFrameRate
@@ -165,7 +157,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
                 // 检测是否手动对焦
                 // 判断是否已经超时
                 mMediaRecorder.mMediaObject?.let {
-                    if (it.duration >= RECORD_TIME_MAX) {
+                    if (it.duration >= recordTimeMax) {
                         return
                     }
 
@@ -186,7 +178,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
             override fun onUp() {
                 mMediaRecorder.mMediaObject?.let {
                     mMediaRecorder.recordState = false
-                    if (it.duration >= RECORD_TIME_MAX) {
+                    if (it.duration >= recordTimeMax) {
                         iv_next?.performClick()
                     } else {
                         mMediaRecorder.setStopDate()
@@ -211,8 +203,8 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
         } else {
             record_camera_led?.visibility = View.GONE
         }
-        record_progress?.setMaxDuration(RECORD_TIME_MAX)
-        record_progress?.setMinTime(RECORD_TIME_MIN)
+        record_progress?.setMaxDuration(recordTimeMax)
+        record_progress?.setMinTime(recordTimeMin)
     }
 
     /**
@@ -395,7 +387,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
     private fun checkStatus(): Int {
         mMediaRecorder.mMediaObject?.duration?.let { duration ->
             if (!isFinishing) {
-                if (duration < RECORD_TIME_MIN) {
+                if (duration < recordTimeMin) {
                     if (duration == 0) {
                         record_camera_switcher?.visibility = View.VISIBLE
                         record_delete?.visibility = View.GONE
@@ -420,7 +412,7 @@ class MediaRecorderActivity : Activity(), MediaRecorderBase.OnErrorListener, Vie
             when (msg.what) {
                 HANDLE_INVALIDATE_PROGRESS -> if (!isFinishing) {
                     mMediaRecorder.mMediaObject?.let {
-                        if (it.medaParts != null && it.duration >= RECORD_TIME_MAX) {
+                        if (it.medaParts != null && it.duration >= recordTimeMax) {
                             iv_next?.performClick()
                             return
                         }
