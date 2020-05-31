@@ -1,4 +1,4 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,7 +8,9 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.mabeijianxi.smallvideorecord2.R;
 import com.mabeijianxi.smallvideorecord2.model.MediaObject;
+import com.mabeijianxi.smallvideorecord2.utils.DeviceUtils;
 
 import java.util.Iterator;
 

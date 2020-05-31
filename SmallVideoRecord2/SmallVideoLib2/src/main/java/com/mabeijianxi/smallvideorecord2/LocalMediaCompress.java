@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import com.mabeijianxi.smallvideorecord2.model.LocalMediaConfig;
 import com.mabeijianxi.smallvideorecord2.model.MediaObject;
 import com.mabeijianxi.smallvideorecord2.model.OnlyCompressOverBean;
+import com.mabeijianxi.smallvideorecord2.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
 
@@ -51,9 +52,9 @@ public class SendSmallVideoActivity extends AppCompatActivity implements View.On
         Intent intent = getIntent();
         videoUri = intent.getStringExtra(MediaRecorderActivity.VIDEO_URI);
         videoScreenshot = intent.getStringExtra(MediaRecorderActivity.VIDEO_SCREENSHOT);
-        Bitmap bitmap = BitmapFactory.decodeFile( videoScreenshot);
+        Bitmap bitmap = BitmapFactory.decodeFile(videoScreenshot);
         iv_video_screenshot.setImageBitmap(bitmap);
-        et_send_content.setHint("您视频地址为:"+videoUri);
+        et_send_content.setHint("Video Uri:\n" + videoUri);
     }
 
     private void initView() {

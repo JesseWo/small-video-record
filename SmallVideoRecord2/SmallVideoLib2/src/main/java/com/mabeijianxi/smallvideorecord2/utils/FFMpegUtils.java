@@ -1,4 +1,4 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.utils;
 
 
 import com.mabeijianxi.smallvideorecord2.jniinterface.FFmpegBridge;
@@ -7,7 +7,7 @@ import com.mabeijianxi.smallvideorecord2.jniinterface.FFmpegBridge;
  * ffmpeg工具类
  * 
  */
-public class FFMpegUtils {
+public final class FFMpegUtils {
 
 
 	public static boolean captureThumbnails(String videoPath, String outputPath, String ss) {

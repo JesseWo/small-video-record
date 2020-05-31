@@ -1,7 +1,7 @@
 package com.mabeijianxi.smallvideorecord2.model;
 
-import com.mabeijianxi.smallvideorecord2.FileUtils;
-import com.mabeijianxi.smallvideorecord2.StringUtils;
+import com.mabeijianxi.smallvideorecord2.utils.FileUtils;
+import com.mabeijianxi.smallvideorecord2.utils.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -16,9 +16,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 
-import com.mabeijianxi.smallvideorecord2.DeviceUtils;
+import com.mabeijianxi.smallvideorecord2.utils.DeviceUtils;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderBase;
-import com.mabeijianxi.smallvideorecord2.StringUtils;
+import com.mabeijianxi.smallvideorecord2.utils.StringUtils;
 import com.mabeijianxi.smallvideorecord2.SurfaceVideoView;
 
 

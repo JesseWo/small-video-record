@@ -10,9 +10,24 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
+
+        <!-- 适配全面屏 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+        <!-- 适配华为(hua wei)刘海屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!-- 适配小米(xiao mi)刘海屏 -->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
         <activity
             android:name="com.mabeijianxi.smallvideorecord2.MediaRecorderActivity"
             android:theme="@style/FullScreenTheme"
+            android:screenOrientation="portrait"
             />
     </application>
 

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.mabeijianxi.smallvideorecord2.jniinterface.FFmpegBridge;
 import com.mabeijianxi.smallvideorecord2.model.MediaObject;
+import com.mabeijianxi.smallvideorecord2.utils.FFMpegUtils;
 
 
 /**

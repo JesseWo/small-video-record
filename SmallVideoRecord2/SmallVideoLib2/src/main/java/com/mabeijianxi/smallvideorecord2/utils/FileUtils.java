@@ -1,7 +1,9 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.utils;
 
 import android.content.Context;
 import android.os.Environment;
+
+import com.mabeijianxi.smallvideorecord2.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +19,7 @@ import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class FileUtils {
+public final class FileUtils {
     public static File getDiskCacheDir(Context context) {
         File cacheDir = context.getCacheDir();
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())

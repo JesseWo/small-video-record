@@ -27,11 +27,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mabeijianxi.smallvideorecord2.FileUtils;
+import com.mabeijianxi.smallvideorecord2.utils.FileUtils;
 import com.mabeijianxi.smallvideorecord2.JianXiCamera;
 import com.mabeijianxi.smallvideorecord2.LocalMediaCompress;
 import com.mabeijianxi.smallvideorecord2.MediaRecorderActivity;
-import com.mabeijianxi.smallvideorecord2.StringUtils;
+import com.mabeijianxi.smallvideorecord2.utils.StringUtils;
 import com.mabeijianxi.smallvideorecord2.model.AutoVBRMode;
 import com.mabeijianxi.smallvideorecord2.model.BaseMediaBitrateConfig;
 import com.mabeijianxi.smallvideorecord2.model.CBRMode;

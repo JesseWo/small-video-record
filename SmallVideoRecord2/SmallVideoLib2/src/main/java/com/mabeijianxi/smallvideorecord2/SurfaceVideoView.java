@@ -16,6 +16,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
+import com.mabeijianxi.smallvideorecord2.utils.StringUtils;
+
 import java.io.IOException;
 
 

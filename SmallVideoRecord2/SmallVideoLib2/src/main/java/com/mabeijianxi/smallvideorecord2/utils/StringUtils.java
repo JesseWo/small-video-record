@@ -1,4 +1,4 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.utils;
 
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -14,7 +14,7 @@ import java.util.TimeZone;
  * 字符串工具类
  * 
  */
-public class StringUtils {
+public final class StringUtils {
 
 	public static final String EMPTY = "";
 

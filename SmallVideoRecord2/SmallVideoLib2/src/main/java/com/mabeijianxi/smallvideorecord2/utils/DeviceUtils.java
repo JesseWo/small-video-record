@@ -1,4 +1,4 @@
-package com.mabeijianxi.smallvideorecord2;
+package com.mabeijianxi.smallvideorecord2.utils;
 
 import android.content.Context;
 import android.content.pm.FeatureInfo;
@@ -18,7 +18,7 @@ import java.io.IOException;
  * 系统版本信息类
  *
  */
-public class DeviceUtils {
+public final class DeviceUtils {
 
     /** >=2.2 */
     public static boolean hasFroyo() {
